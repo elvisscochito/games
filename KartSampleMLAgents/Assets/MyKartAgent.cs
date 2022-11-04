@@ -49,13 +49,20 @@ public class MyKartAgent : Agent
         }
     }
 
-    // Execute actions (from keyboard, learn module or previuos module)
-    public override void OnActionReceived(ActionBuffers actions)
+    // Execute actions (from keyboard, learn module or previuos module) automatically
+    public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        float action = angularSpeed * Mathf.Clamp(actionBuffers.ContinuousActions[0], -1.0f, 1.0f);
+        myHorizontal = action;
+
+        // while more time stay on the track it will get this reward (avoid crash to get it)
+        SetReward(0.1f);
     }
 
-    // Control agent trought kerboard
     public override void Heuristic(in ActionBuffers actionsOut)
     {
+        // build an action vector
+        ActionSegment<float> continuousActionOut = actionsOut.ContinuousActions;
+        continuousActionOut[0] = Input.GetAxis("Horizontal");
     }
 }
