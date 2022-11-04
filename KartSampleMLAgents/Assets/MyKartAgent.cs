@@ -33,6 +33,20 @@ public class MyKartAgent : Agent
     // Recolect observations and build the vector, to understand the enverioment 
     public override void CollectObservations(VectorSensor sensor)
     {
+        // Pass trought each sensor of Paren Sensors game object
+        for (int k = 0; k < sensors.childCount; k++)
+        {
+            // Get each vector
+            Transform sensorK = sensors.transform.GetChild(k);
+            RaycastHit hit;
+
+            if (Physics.Raycast(sensorK.position, sensorK.forward, out hit, 100.0f))
+                // if goes ok, register observations as objects, obstacles and their distance
+                sensor.AddObservation(hit.distance);
+            else
+                // if for some reason is empty fill it anymway (shouldn't happen in this track)
+                sensor.AddObservation(100.0f);
+        }
     }
 
     // Execute actions (from keyboard, learn module or previuos module)
