@@ -4,8 +4,9 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using KartGame.KartSystems;
 
-public class MyKartAgent : Agent
+public class MyKartAgent : Agent, IInput
 {
     public Transform sensors;
     public float speed = 1.0f;
@@ -59,10 +60,25 @@ public class MyKartAgent : Agent
         SetReward(0.1f);
     }
 
+    // Control agent trought kerboard to a human user
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         // build an action vector
         ActionSegment<float> continuousActionOut = actionsOut.ContinuousActions;
         continuousActionOut[0] = Input.GetAxis("Horizontal");
+    }
+
+    // Implementing interface
+    public InputData GenerateInput()
+    {
+        return new InputData
+        {
+            // Always accelerate and never stop
+            Accelerate = true,
+
+            // No stop
+            Brake = false,
+            TurnInput = myHorizontal
+        };
     }
 }
