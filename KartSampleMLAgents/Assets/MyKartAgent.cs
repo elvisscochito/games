@@ -81,4 +81,11 @@ public class MyKartAgent : Agent, IInput
             TurnInput = myHorizontal
         };
     }
+
+    // set penalty
+    private void OnCollisionEnter(Collision collision)
+    {
+        SetReward(-1.0f);
+        EndEpisode();
+    }
 }
