@@ -6,7 +6,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using KartGame.KartSystems;
 
-public class MyKartAgent : Agent, IInput
+public class MyKartAgentElviss : Agent, IInput
 {
     public Transform sensors;
     public float speed = 1.0f;
