@@ -12,6 +12,12 @@ class MoneyAgent(mesa.Agent):
         # For demostration purposes, we just print a message.
         print(f"Hi, I'm the agent: {self.unique_id}")
 
+        # Exchange wealth with random neighbor
+        if self.wealth > 0:
+            neighbor = self.random.choice(self.model.schedule.agents)
+            neighbor.wealth += 1
+            self.wealth -= 1
+            print(f"And I exchange wealth with neighbor: {neighbor.unique_id}")
 class MoneyModel (mesa.Model):
     # A model with some number of agents
     def __init__(self, N):
