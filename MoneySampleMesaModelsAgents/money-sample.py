@@ -1,4 +1,5 @@
 import mesa
+import matplotlib.pyplot as plt
 
 class MoneyAgent(mesa.Agent):
     # A model-based agent with fixed initial wealth
@@ -32,7 +33,20 @@ class MoneyModel (mesa.Model):
     def step(self):
         # Advance the model by one step (method build in scheduler)
         self.schedule.step()
-        
-# Create a model
-empty_model = MoneyModel(10)
-empty_model.step()
+
+def plot_model(model):
+    # Plot the number of agents in the model
+    agent_wealth = [agent.wealth for agent in model.schedule.agents]
+    plt.hist(agent_wealth)
+    plt.title("Wealth distribution")
+    plt.xlabel("Wealth")
+    plt.ylabel("Number of agents")
+    plt.show()
+
+if __name__ == "__main__":
+    # Create a model
+    empty_model = MoneyModel(10)
+    # Run the model
+    empty_model.step()
+    # Plot the model
+    plot_model(empty_model)
