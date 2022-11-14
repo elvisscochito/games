@@ -24,23 +24,13 @@ class MoneyAgent(mesa.Agent):
             other = self.random.choice(cellmates)
             other.wealth += 1
             self.wealth -= 1
+            print(f"And I exchange wealth with neighbor: {other.unique_id}")
 
     def step(self):
+        print(f"Hi, I'm the agent: {self.unique_id} and I'm at position {self.pos} with wealth {self.wealth}")
         self.move()
         if self.wealth > 0:
             self.give_money()
-
-    """ def step(self):
-        # The agent's step will go here.
-        # For demostration purposes, we just print a message.
-        print(f"Hi, I'm the agent: {self.unique_id}")
-
-        # Exchange wealth with random neighbor
-        if self.wealth > 0:
-            neighbor = self.random.choice(self.model.schedule.agents)
-            neighbor.wealth += 1
-            self.wealth -= 1
-            print(f"And I exchange wealth with neighbor: {neighbor.unique_id}") """
 
 class MoneyModel (mesa.Model):
     # A model with some number of agents
@@ -65,12 +55,11 @@ class MoneyModel (mesa.Model):
         # Advance the model by one step (method build in scheduler)
         self.schedule.step()
 
-def training():
-
+def training_steps():
     # create the model and the grid
     model = MoneyModel(50, 10, 10)
 
-    # Advance the model by 20 steps
+    # Every agent move by 20 steps
     for i in range(20):
         model.step()
 
@@ -79,18 +68,33 @@ def training():
         cell_content, x, y = cell
         agent_count = len(cell_content)
         agent_counts[x][y] = agent_count
+    
+    plot_model(agent_counts)
+
+def training_money():
+    # create the model and the grid
+    model = MoneyModel(50, 10, 10)
+
+    # Every agent move by 20 steps
+    for i in range(20):
+        model.step()
+    
+    # Get the wealth of all agents in each cell
+    agent_counts = np.zeros((model.grid.width, model.grid.height))
+    for cell in model.grid.coord_iter():
+        cell_content, x, y = cell
+        sum = 0
+        for agent in cell_content:
+            sum += agent.wealth
+        agent_counts[x][y] = sum
+    plot_model(agent_counts)
+
+def plot_model(model):
+    agent_counts = model
     plt.imshow(agent_counts, interpolation = 'nearest')
     plt.colorbar()
     plt.show()
 
-""" def plot_model(model):
-    # Plot the model
-    plt.figure(figsize=(10, 10))
-    plt.imshow(model.grid.get_grid())
-    plt.axis('off')
-    plt.tight_layout()
-    plt.show() """
-
 if __name__ == "__main__":
     # Run the model
-    training()
+    training_money()
