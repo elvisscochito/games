@@ -19,6 +19,7 @@ class MoneyAgent(mesa.Agent):
             neighbor.wealth += 1
             self.wealth -= 1
             print(f"And I exchange wealth with neighbor: {neighbor.unique_id}")
+
 class MoneyModel (mesa.Model):
     # A model with some number of agents
     def __init__(self, N):
